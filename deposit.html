@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Funds</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        nav {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #ffeb3b;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(90deg, #65f7a1, #1f8ceb);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #1f8ceb, #65f7a1);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="create.html">CREATE</a></li>
+            <li><a href="withdraw.html">WITHDRAW</a></li>
+            <li><a href="deposit.html">DEPOSIT</a></li>
+            <li><a href="data.html">DETAILS</a></li>
+        </ul>
+    </nav>
+
+    <div class="form-container">
+        <h2>Deposit Funds</h2>
+        <form id="depositForm">
+            <label for="accountNumber">Account Number:</label>
+            <input type="number" id="accountNumber" name="accountNumber" required>
+            
+            <label for="amount">Deposit Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+            
+            <button type="submit">Deposit</button>
+        </form>
+    </div>
+
+    <footer>
+        &copy; 2024 Deposit System. All Rights Reserved.
+    </footer>
+
+    <script>
+        document.getElementById('depositForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const accountNumber = document.getElementById('accountNumber').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+
+            // Retrieve accounts from localStorage
+            const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+
+            // Find the account by account number
+            const account = accounts.find(acc => acc.accountNumber === accountNumber);
+
+            if (account) {
+                // Update the account balance
+                account.balance += amount;
+
+                // Save updated accounts back to localStorage
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+
+                // Show success message
+                alert(`Successfully deposited $${amount.toFixed(2)} into account number ${accountNumber}.`);
+
+                // Optionally clear the form
+                document.getElementById('depositForm').reset();
+            } else {
+                // Show error if account not found
+                alert('Account not found. Please check the account number.');
+            }
+        });
+    </script>
+</body>
+</html>
